@@ -1,0 +1,7 @@
+*.tar.gz
+*.o
+maphoon2008c/maphoon
+example_calculator/calculator
+*.dvi
+*.ps
+*.swp

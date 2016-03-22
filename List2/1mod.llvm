@@ -1,0 +1,44 @@
+; ModuleID = '1.c'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+define i64 @main() {
+  %1 = call i64 @gcd(i64 15, i64 9)
+  ret i64 %1
+}
+
+; Function Attrs: nounwind uwtable
+define i64 @gcd(i64 %x, i64 %y) #0 {
+  %cmp.x = icmp eq i64 %x, 0
+  br i1 %cmp.x, label %x_eq_0, label %x_neq_0
+
+x_eq_0:
+  ret i64 %y
+
+x_neq_0:
+  %cmp.y = icmp eq i64 %y, 0
+  br i1 %cmp.y, label %y_eq_0, label %y_neq_0
+
+y_eq_0:
+  ret i64 %x
+
+y_neq_0:
+  %cmp.xy = icmp ult i64 %x, %y
+  br i1 %cmp.xy, label %x_lt_y, label %x_gt_y
+
+x_lt_y:
+  %y_sub_x = sub i64 %y, %x
+  %res.0 = call i64 @gcd(i64 %x, i64 %y_sub_x)
+  ret i64 %res.0
+
+x_gt_y:
+  %x_sub_y = sub i64 %x, %y
+  %res.1 = call i64 @gcd(i64 %x_sub_y, i64 %y)
+  ret i64 %res.1
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.0 (tags/RELEASE_370/final)"}

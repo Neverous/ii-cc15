@@ -1,0 +1,2629 @@
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = alloca i8, align 1
+  store i8 %c, i8* %1, align 1
+  %2 = load i8, i8* %1, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp sge i32 %3, 65
+  br i1 %4, label %5, label %14
+
+; <label>:5                                       ; preds = %0
+  %6 = load i8, i8* %1, align 1
+  %7 = sext i8 %6 to i32
+  %8 = icmp sle i32 %7, 90
+  br i1 %8, label %9, label %14
+
+; <label>:9                                       ; preds = %5
+  %10 = load i8, i8* %1, align 1
+  %11 = sext i8 %10 to i32
+  %12 = sub nsw i32 %11, 65
+  %13 = add nsw i32 %12, 97
+  br label %17
+
+; <label>:14                                      ; preds = %5, %0
+  %15 = load i8, i8* %1, align 1
+  %16 = sext i8 %15 to i32
+  br label %17
+
+; <label>:17                                      ; preds = %14, %9
+  %18 = phi i32 [ %13, %9 ], [ %16, %14 ]
+  %19 = trunc i32 %18 to i8
+  ret i8 %19
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = alloca i8, align 1
+  store i8 %c, i8* %1, align 1
+  %2 = load i8, i8* %1, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp sge i32 %3, 65
+  br i1 %4, label %5, label %14
+
+; <label>:5                                       ; preds = %0
+  %6 = load i8, i8* %1, align 1
+  %7 = sext i8 %6 to i32
+  %8 = icmp sle i32 %7, 90
+  br i1 %8, label %9, label %14
+
+; <label>:9                                       ; preds = %5
+  %10 = load i8, i8* %1, align 1
+  %11 = sext i8 %10 to i32
+  %12 = sub nsw i32 %11, 65
+  %13 = add nsw i32 %12, 97
+  br label %17
+
+; <label>:14                                      ; preds = %5, %0
+  %15 = load i8, i8* %1, align 1
+  %16 = sext i8 %15 to i32
+  br label %17
+
+; <label>:17                                      ; preds = %14, %9
+  %18 = phi i32 [ %13, %9 ], [ %16, %14 ]
+  %19 = trunc i32 %18 to i8
+  ret i8 %19
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %10
+
+; <label>:3                                       ; preds = %0
+  %4 = sext i8 %c to i32
+  %5 = icmp sle i32 %4, 90
+  br i1 %5, label %6, label %10
+
+; <label>:6                                       ; preds = %3
+  %7 = sext i8 %c to i32
+  %8 = sub nsw i32 %7, 65
+  %9 = add nsw i32 %8, 97
+  br label %12
+
+; <label>:10                                      ; preds = %3, %0
+  %11 = sext i8 %c to i32
+  br label %12
+
+; <label>:12                                      ; preds = %10, %6
+  %13 = phi i32 [ %9, %6 ], [ %11, %10 ]
+  %14 = trunc i32 %13 to i8
+  ret i8 %14
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %8
+
+; <label>:3                                       ; preds = %0
+  %4 = icmp sle i32 %1, 90
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %3
+  %6 = sub nsw i32 %1, 65
+  %7 = add nsw i32 %6, 97
+  br label %9
+
+; <label>:8                                       ; preds = %3, %0
+  br label %9
+
+; <label>:9                                       ; preds = %8, %5
+  %10 = phi i32 [ %7, %5 ], [ %1, %8 ]
+  %11 = trunc i32 %10 to i8
+  ret i8 %11
+}
+*** IR Dump After Lower 'expect' Intrinsics ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %8
+
+; <label>:3                                       ; preds = %0
+  %4 = icmp sle i32 %1, 90
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %3
+  %6 = sub nsw i32 %1, 65
+  %7 = add nsw i32 %6, 97
+  br label %9
+
+; <label>:8                                       ; preds = %3, %0
+  br label %9
+
+; <label>:9                                       ; preds = %8, %5
+  %10 = phi i32 [ %7, %5 ], [ %1, %8 ]
+  %11 = trunc i32 %10 to i8
+  ret i8 %11
+}
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  %1 = alloca i8*, align 8
+  store i8* %s, i8** %1, align 8
+  br label %2
+
+; <label>:2                                       ; preds = %7, %0
+  %3 = load i8*, i8** %1, align 8
+  %4 = load i8, i8* %3, align 1
+  %5 = sext i8 %4 to i32
+  %6 = icmp ne i32 %5, 0
+  br i1 %6, label %7, label %14
+
+; <label>:7                                       ; preds = %2
+  %8 = load i8*, i8** %1, align 8
+  %9 = load i8, i8* %8, align 1
+  %10 = call signext i8 @tolower1(i8 signext %9)
+  %11 = load i8*, i8** %1, align 8
+  store i8 %10, i8* %11, align 1
+  %12 = load i8*, i8** %1, align 8
+  %13 = getelementptr inbounds i8, i8* %12, i32 1
+  store i8* %13, i8** %1, align 8
+  br label %2
+
+; <label>:14                                      ; preds = %2
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  %1 = alloca i8*, align 8
+  store i8* %s, i8** %1, align 8
+  br label %2
+
+; <label>:2                                       ; preds = %7, %0
+  %3 = load i8*, i8** %1, align 8
+  %4 = load i8, i8* %3, align 1
+  %5 = sext i8 %4 to i32
+  %6 = icmp ne i32 %5, 0
+  br i1 %6, label %7, label %14
+
+; <label>:7                                       ; preds = %2
+  %8 = load i8*, i8** %1, align 8
+  %9 = load i8, i8* %8, align 1
+  %10 = call signext i8 @tolower1(i8 signext %9)
+  %11 = load i8*, i8** %1, align 8
+  store i8 %10, i8* %11, align 1
+  %12 = load i8*, i8** %1, align 8
+  %13 = getelementptr inbounds i8, i8* %12, i32 1
+  store i8* %13, i8** %1, align 8
+  br label %2
+
+; <label>:14                                      ; preds = %2
+  ret void
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %9
+
+; <label>:5                                       ; preds = %1
+  %6 = load i8, i8* %.0, align 1
+  %7 = call signext i8 @tolower1(i8 signext %6)
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %7, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %1
+  %6 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %6, i8* %.0, align 1
+  %7 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:8                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Lower 'expect' Intrinsics ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %7, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %1
+  %6 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %6, i8* %.0, align 1
+  %7 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:8                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Interprocedural Sparse Conditional Constant Propagation ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %8
+
+; <label>:3                                       ; preds = %0
+  %4 = icmp sle i32 %1, 90
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %3
+  %6 = sub nsw i32 %1, 65
+  %7 = add nsw i32 %6, 97
+  br label %9
+
+; <label>:8                                       ; preds = %3, %0
+  br label %9
+
+; <label>:9                                       ; preds = %8, %5
+  %10 = phi i32 [ %7, %5 ], [ %1, %8 ]
+  %11 = trunc i32 %10 to i8
+  ret i8 %11
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %7, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %1
+  %6 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %6, i8* %.0, align 1
+  %7 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:8                                       ; preds = %1
+  ret void
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Global Variable Optimizer ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %8
+
+; <label>:3                                       ; preds = %0
+  %4 = icmp sle i32 %1, 90
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %3
+  %6 = sub nsw i32 %1, 65
+  %7 = add nsw i32 %6, 97
+  br label %9
+
+; <label>:8                                       ; preds = %3, %0
+  br label %9
+
+; <label>:9                                       ; preds = %8, %5
+  %10 = phi i32 [ %7, %5 ], [ %1, %8 ]
+  %11 = trunc i32 %10 to i8
+  ret i8 %11
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %7, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %1
+  %6 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %6, i8* %.0, align 1
+  %7 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:8                                       ; preds = %1
+  ret void
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Dead Argument Elimination ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = sext i8 %c to i32
+  %2 = icmp sge i32 %1, 65
+  br i1 %2, label %3, label %8
+
+; <label>:3                                       ; preds = %0
+  %4 = icmp sle i32 %1, 90
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %3
+  %6 = sub nsw i32 %1, 65
+  %7 = add nsw i32 %6, 97
+  br label %9
+
+; <label>:8                                       ; preds = %3, %0
+  br label %9
+
+; <label>:9                                       ; preds = %8, %5
+  %10 = phi i32 [ %7, %5 ], [ %1, %8 ]
+  %11 = trunc i32 %10 to i8
+  ret i8 %11
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %7, %5 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = sext i8 %2 to i32
+  %4 = icmp ne i32 %3, 0
+  br i1 %4, label %5, label %8
+
+; <label>:5                                       ; preds = %1
+  %6 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %6, i8* %.0, align 1
+  %7 = getelementptr inbounds i8, i8* %.0, i32 1
+  br label %1
+
+; <label>:8                                       ; preds = %1
+  ret void
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  br i1 %1, label %2, label %6
+
+; <label>:2                                       ; preds = %0
+  %3 = icmp slt i8 %c, 91
+  br i1 %3, label %4, label %6
+
+; <label>:4                                       ; preds = %2
+  %5 = add i8 %c, 32
+  br label %7
+
+; <label>:6                                       ; preds = %2, %0
+  br label %7
+
+; <label>:7                                       ; preds = %6, %4
+  %8 = phi i8 [ %5, %4 ], [ %c, %6 ]
+  ret i8 %8
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %5, i8* %.0, align 1
+  %6 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %5, i8* %.0, align 1
+  %6 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Remove unused exception handling info ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Function Integration/Inlining ***
+; Function Attrs: nounwind uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Deduce function attributes ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Promote 'by reference' arguments to scalars ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %1 = icmp sgt i8 %c, 64
+  %2 = icmp slt i8 %c, 91
+  %or.cond = and i1 %1, %2
+  %3 = add i8 %c, 32
+  %4 = select i1 %or.cond, i8 %3, i8 %c
+  ret i8 %4
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Tail Call Elimination ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Reassociate expressions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After MergedLoadStoreMotion ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Global Value Numbering ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After MemCpy Optimization ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Sparse Conditional Constant Propagation ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Bit-Tracking Dead Code Elimination ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Dead Store Elimination ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Aggressive Dead Code Elimination ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Remove unused exception handling info ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = call signext i8 @tolower1(i8 signext %2)
+  store i8 %5, i8* %.0, align 1
+  %6 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Function Integration/Inlining ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Deduce function attributes ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Promote 'by reference' arguments to scalars ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Tail Call Elimination ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Reassociate expressions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %8, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %9, label %4
+
+; <label>:4                                       ; preds = %1
+  %c.off.i = add i8 %2, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %2, 32
+  %7 = select i1 %5, i8 %6, i8 %2
+  store i8 %7, i8* %.0, align 1
+  %8 = getelementptr inbounds i8, i8* %.0, i64 1
+  br label %1
+
+; <label>:9                                       ; preds = %1
+  ret void
+}
+*** IR Dump After Rotate Loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Loop Invariant Code Motion ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Unswitch loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Induction Variable Simplification ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Recognize loop idioms ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Delete dead loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After Unroll loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+*** IR Dump After MergedLoadStoreMotion ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Global Value Numbering ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After MemCpy Optimization ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Sparse Conditional Constant Propagation ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Bit-Tracking Dead Code Elimination ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %11, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %4 = phi i8 [ %1, %.lr.ph ], [ %9, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %8, %3 ]
+  %c.off.i = add i8 %4, -65
+  %5 = icmp ult i8 %c.off.i, 26
+  %6 = add i8 %4, 32
+  %7 = select i1 %5, i8 %6, i8 %4
+  store i8 %7, i8* %.01, align 1
+  %8 = getelementptr inbounds i8, i8* %.01, i64 1
+  %9 = load i8, i8* %8, align 1
+  %10 = icmp eq i8 %9, 0
+  br i1 %10, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %11
+
+; <label>:11                                      ; preds = %._crit_edge, %0
+  ret void
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Dead Store Elimination ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop Invariant Code Motion ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Aggressive Dead Code Elimination ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Remove unused exception handling info ***
+Printing <null> Function
+*** IR Dump After Function Integration/Inlining ***
+Printing <null> Function
+*** IR Dump After Deduce function attributes ***
+Printing <null> Function
+*** IR Dump After Promote 'by reference' arguments to scalars ***
+Printing <null> Function
+*** IR Dump After A No-Op Barrier Pass ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Float to int ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop Vectorization ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After SLP Vectorizer ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Alignment from assumptions ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Float to int ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Rotate Loops ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Loop Vectorization ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After SLP Vectorizer ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %0 ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %0 ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Unroll loops ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Loop Invariant Code Motion ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Alignment from assumptions ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+*** IR Dump After Strip Unused Function Prototypes ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Eliminate Available Externally Globals ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Dead Global Elimination ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Merge Duplicate Global Constants ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Print module to stderr ***; ModuleID = '2.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readnone uwtable
+define signext i8 @tolower1(i8 signext %c) #0 {
+  %c.off = add i8 %c, -65
+  %1 = icmp ult i8 %c.off, 26
+  %2 = add i8 %c, 32
+  %3 = select i1 %1, i8 %2, i8 %c
+  ret i8 %3
+}
+
+; Function Attrs: nounwind uwtable
+define void @tolower(i8* nocapture %s) #1 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %3 = phi i8 [ %8, %.lr.ph ], [ %1, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %7, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %c.off.i = add i8 %3, -65
+  %4 = icmp ult i8 %c.off.i, 26
+  %5 = add i8 %3, 32
+  %6 = select i1 %4, i8 %5, i8 %3
+  store i8 %6, i8* %.01, align 1
+  %7 = getelementptr inbounds i8, i8* %.01, i64 1
+  %8 = load i8, i8* %7, align 1
+  %9 = icmp eq i8 %8, 0
+  br i1 %9, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  ret void
+}
+
+attributes #0 = { nounwind readnone uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}

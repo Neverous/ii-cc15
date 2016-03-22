@@ -1,0 +1,67 @@
+; ModuleID = '3.c'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+define i64 @main() {
+  %1 = call i64 @longestsequence(i64 10240)
+  ret i64 %1
+}
+
+; Function Attrs: nounwind uwtable
+define i64 @longestsequence(i64 %upperbound) #0 {
+    %longesti       = add i64 0, 0
+    %longeststop    = add i64 0, 0
+    %i              = add i64 0, 1
+    br label %main_loop
+
+main_loop:
+    %i_1            = phi i64 [ %i, %0 ], [ %i_2, %exit_inner_loop ], [ %i_2, %main_loop_if ]
+    %longeststop1   = phi i64 [ %longeststop, %0], [ %longeststop2, %main_loop_if ], [ %longeststop1, %exit_inner_loop]
+    %longesti1      = phi i64 [ %longesti, %0 ], [ %longesti2, %main_loop_if ], [ %longesti1, %exit_inner_loop ]
+    %limit          = icmp ult i64 %i_1, %upperbound
+    br i1 %limit, label %main_body, label %exit_main_loop
+
+main_body:
+    %length         = add i64 0, 0
+    br label %inner_loop
+
+inner_loop:
+    %length1        = phi i64 [ %length, %main_body ], [ %length2, %val_times_3_plus_1 ], [ %length2, %val_div_2 ]
+    %val            = phi i64 [ %i_1, %main_body], [ %val2, %val_times_3_plus_1 ], [ %val3, %val_div_2 ]
+    %val_ne_1       = icmp ne i64 %val, 1
+    br i1 %val_ne_1, label %inner_loop_body, label %exit_inner_loop
+
+inner_loop_body:
+    %val_mod_2  = urem i64 %val, 2
+    %val_odd    = icmp eq i64 %val_mod_2, 1
+    %length2    = add i64 %length1, 1
+    br i1 %val_odd, label %val_times_3_plus_1, label %val_div_2
+
+val_times_3_plus_1:
+    %val.1  = mul i64 %val, 3
+    %val2   = add i64 %val.1, 1
+    br label %inner_loop
+
+val_div_2:
+    %val3   = udiv i64 %val, 2
+    br label %inner_loop
+
+exit_inner_loop:
+    %longer = icmp ugt i64 %length1, %longeststop1
+    %i_2 = add i64 %i_1, 1
+    br i1 %longer, label %main_loop_if, label %main_loop
+
+main_loop_if:
+    %longesti2      = add i64 %i_1, 0
+    %longeststop2   = add i64 %length1, 0
+    br label %main_loop
+
+exit_main_loop:
+    ret i64 %longesti1
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.0 (tags/RELEASE_370/final)"}

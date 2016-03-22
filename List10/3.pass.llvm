@@ -1,0 +1,1687 @@
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  %1 = alloca i8*, align 8
+  %length = alloca i32, align 4
+  store i8* %s, i8** %1, align 8
+  store i32 0, i32* %length, align 4
+  br label %2
+
+; <label>:2                                       ; preds = %7, %0
+  %3 = load i8*, i8** %1, align 8
+  %4 = getelementptr inbounds i8, i8* %3, i32 1
+  store i8* %4, i8** %1, align 8
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp ne i8 %5, 0
+  br i1 %6, label %7, label %10
+
+; <label>:7                                       ; preds = %2
+  %8 = load i32, i32* %length, align 4
+  %9 = add i32 %8, 1
+  store i32 %9, i32* %length, align 4
+  br label %2
+
+; <label>:10                                      ; preds = %2
+  %11 = load i32, i32* %length, align 4
+  ret i32 %11
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  %1 = alloca i8*, align 8
+  %length = alloca i32, align 4
+  store i8* %s, i8** %1, align 8
+  store i32 0, i32* %length, align 4
+  br label %2
+
+; <label>:2                                       ; preds = %8, %0
+  %3 = load i8*, i8** %1, align 8
+  %4 = getelementptr inbounds i8, i8* %3, i32 1
+  store i8* %4, i8** %1, align 8
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp ne i8 %5, 0
+  %7 = load i32, i32* %length, align 4
+  br i1 %6, label %8, label %10
+
+; <label>:8                                       ; preds = %2
+  %9 = add i32 %7, 1
+  store i32 %9, i32* %length, align 4
+  br label %2
+
+; <label>:10                                      ; preds = %2
+  ret i32 %7
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Lower 'expect' Intrinsics ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Interprocedural Sparse Conditional Constant Propagation ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Global Variable Optimizer ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Dead Argument Elimination ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %5, %0
+  %.0 = phi i8* [ %s, %0 ], [ %2, %5 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %5 ]
+  %2 = getelementptr inbounds i8, i8* %.0, i32 1
+  %3 = load i8, i8* %.0, align 1
+  %4 = icmp ne i8 %3, 0
+  br i1 %4, label %5, label %7
+
+; <label>:5                                       ; preds = %1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+
+attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Remove unused exception handling info ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Function Integration/Inlining ***
+; Function Attrs: nounwind uwtable
+define i32 @length(i8* %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Deduce function attributes ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Promote 'by reference' arguments to scalars ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After SROA ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Early CSE ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Tail Call Elimination ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Reassociate expressions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  ret i32 %length.0
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  br label %1
+
+; <label>:1                                       ; preds = %4, %0
+  %.0 = phi i8* [ %s, %0 ], [ %5, %4 ]
+  %length.0 = phi i32 [ 0, %0 ], [ %6, %4 ]
+  %2 = load i8, i8* %.0, align 1
+  %3 = icmp eq i8 %2, 0
+  br i1 %3, label %7, label %4
+
+; <label>:4                                       ; preds = %1
+  %5 = getelementptr inbounds i8, i8* %.0, i64 1
+  %6 = add i32 %length.0, 1
+  br label %1
+
+; <label>:7                                       ; preds = %1
+  %length.0.lcssa = phi i32 [ %length.0, %1 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Rotate Loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Loop Invariant Code Motion ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Unswitch loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  %.lcssa = phi i32 [ %5, %3 ]
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %.lcssa, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Induction Variable Simplification ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Recognize loop idioms ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Delete dead loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After Unroll loops ***
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+*** IR Dump After MergedLoadStoreMotion ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  %.lcssa = phi i32 [ %5, %3 ]
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %.lcssa, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Global Value Numbering ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After MemCpy Optimization ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Sparse Conditional Constant Propagation ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Bit-Tracking Dead Code Elimination ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %8, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0
+  br label %3
+
+; <label>:3                                       ; preds = %.lr.ph, %3
+  %length.02 = phi i32 [ 0, %.lr.ph ], [ %5, %3 ]
+  %.01 = phi i8* [ %s, %.lr.ph ], [ %4, %3 ]
+  %4 = getelementptr inbounds i8, i8* %.01, i64 1
+  %5 = add i32 %length.02, 1
+  %6 = load i8, i8* %4, align 1
+  %7 = icmp eq i8 %6, 0
+  br i1 %7, label %._crit_edge, label %3
+
+._crit_edge:                                      ; preds = %3
+  br label %8
+
+; <label>:8                                       ; preds = %._crit_edge, %0
+  %length.0.lcssa = phi i32 [ %5, %._crit_edge ], [ 0, %0 ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Jump Threading ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Value Propagation ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Dead Store Elimination ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop Invariant Code Motion ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Aggressive Dead Code Elimination ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Remove unused exception handling info ***
+Printing <null> Function
+*** IR Dump After Function Integration/Inlining ***
+Printing <null> Function
+*** IR Dump After Deduce function attributes ***
+Printing <null> Function
+*** IR Dump After Promote 'by reference' arguments to scalars ***
+Printing <null> Function
+*** IR Dump After A No-Op Barrier Pass ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Float to int ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Rotate Loops ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Loop Vectorization ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After SLP Vectorizer ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Simplify the CFG ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph
+
+.lr.ph:                                           ; preds = %0, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %0 ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %0 ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge, label %.lr.ph
+
+._crit_edge:                                      ; preds = %.lr.ph, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %.lr.ph ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Unroll loops ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Combine redundant instructions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Canonicalize natural loops ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %4, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop-Closed SSA Form Pass ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Loop Invariant Code Motion ***
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+*** IR Dump After Alignment from assumptions ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+*** IR Dump After Strip Unused Function Prototypes ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Eliminate Available Externally Globals ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Dead Global Elimination ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Merge Duplicate Global Constants ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Module Verifier ***
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
+*** IR Dump After Print module to stderr ***; ModuleID = '3.llvm'
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: nounwind readonly uwtable
+define i32 @length(i8* nocapture readonly %s) #0 {
+  %1 = load i8, i8* %s, align 1
+  %2 = icmp eq i8 %1, 0
+  br i1 %2, label %._crit_edge, label %.lr.ph.preheader
+
+.lr.ph.preheader:                                 ; preds = %0
+  br label %.lr.ph
+
+.lr.ph:                                           ; preds = %.lr.ph.preheader, %.lr.ph
+  %length.02 = phi i32 [ %4, %.lr.ph ], [ 0, %.lr.ph.preheader ]
+  %.01 = phi i8* [ %3, %.lr.ph ], [ %s, %.lr.ph.preheader ]
+  %3 = getelementptr inbounds i8, i8* %.01, i64 1
+  %4 = add i32 %length.02, 1
+  %5 = load i8, i8* %3, align 1
+  %6 = icmp eq i8 %5, 0
+  br i1 %6, label %._crit_edge.loopexit, label %.lr.ph
+
+._crit_edge.loopexit:                             ; preds = %.lr.ph
+  %.lcssa = phi i32 [ %4, %.lr.ph ]
+  br label %._crit_edge
+
+._crit_edge:                                      ; preds = %._crit_edge.loopexit, %0
+  %length.0.lcssa = phi i32 [ 0, %0 ], [ %.lcssa, %._crit_edge.loopexit ]
+  ret i32 %length.0.lcssa
+}
+
+attributes #0 = { nounwind readonly uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+
+!llvm.ident = !{!0}
+
+!0 = !{!"clang version 3.7.1 (tags/RELEASE_371/final)"}
